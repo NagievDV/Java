@@ -3,18 +3,34 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Path input = Paths.get("C:/Users/217042/Desktop/Java/caesarsCipher/src/input.txt");
-        Path output = Paths.get("C:/Users/217042/Desktop/Java/caesarsCipher/src/output.txt");
-        Path decOutput = Paths.get("C:/Users/217042/Desktop/Java/caesarsCipher/src/decOutput.txt");
-        encrypt(input, output, 1);
-        decrypt(output, decOutput, 1 );
-        bruteforceDecrypt(output);
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
 
+
+
+public class Main extends Application {
+
+public static void main(String[] args) {
+    Path input = Paths.get("src/resources/input.txt");
+    Path output = Paths.get("src/resources/output.txt");
+    Path decOutput = Paths.get("src/resources/decOutput.txt");
+    launch(args);
+}
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+        Scene scene = new Scene(root);
+
+        stage.setScene(scene);
+
+        stage.setTitle("Шифр Цезаря");
+
+        stage.show();
     }
 
     public static String readFromFile(Path filePath) {
@@ -45,7 +61,7 @@ public class Main {
         writeToFile(outputFilePath, processString(inputFilePath, key, alphabet));
     }
 
-    private static String processString(Path inputFilePath, int key, String alphabet) {
+    public static String processString(Path inputFilePath, int key, String alphabet) {
         if (key < 1 || key > alphabet.length() - 1)
             throw new IllegalArgumentException("Key must be greater than 0 and less than 33");
         char[] inputString = readFromFile(inputFilePath).toCharArray();
@@ -67,16 +83,10 @@ public class Main {
 
     public static void bruteforceDecrypt(Path inputFilePath){
         String alphabet = "яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("\n\nПрограмма будет выводить варианты с разным сдвигом. Вводите N пока не увидите осмысленный текст. Когда это произойдет введите Y. \n\n");
         for (int i = 1; i < 33; i++) {
             String str = processString(inputFilePath, i, alphabet);
             System.out.println(str);
-            if (scanner.nextLine() == "Y"){
-                System.out.print("Название файла для сохранения: ");
-                String fileName = scanner.nextLine();
-                writeToFile(Paths.get("C:/Users/217042/Desktop/Java/caesarsCipher/src/" + fileName), str);
-            }
         }
     }
+
 }
