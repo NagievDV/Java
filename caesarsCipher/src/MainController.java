@@ -23,6 +23,9 @@ public class MainController {
     private RadioButton rbBruteforceDecrypt;
 
     @FXML
+    private RadioButton rbDecrypt;
+
+    @FXML
     private RadioButton rbStatisticDecrypt;
 
     @FXML
@@ -35,6 +38,7 @@ public class MainController {
     public void initialize() {
         ToggleGroup toggleGroup = new ToggleGroup();
         rbEncrypt.setToggleGroup(toggleGroup);
+        rbDecrypt.setToggleGroup(toggleGroup);
         rbBruteforceDecrypt.setToggleGroup(toggleGroup);
         rbStatisticDecrypt.setToggleGroup(toggleGroup);
     }
@@ -58,6 +62,10 @@ public class MainController {
         Path path = Paths.get(lbFilePath.getText());
         if (rbEncrypt.isSelected()) {
             alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+            taResult.setText(Main.processString(path, Integer.parseInt(showKeyInputDialog()), alphabet));
+        }
+        else if (rbDecrypt.isSelected()) {
+            alphabet = "яюэьыъщшчцхфутсрпонмлкйизжёедгвба";
             taResult.setText(Main.processString(path, Integer.parseInt(showKeyInputDialog()), alphabet));
         }
         else if (rbBruteforceDecrypt.isSelected()){
